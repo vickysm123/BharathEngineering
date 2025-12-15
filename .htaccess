@@ -1,0 +1,85 @@
+########################################
+# ENABLE REWRITE ENGINE
+########################################
+RewriteEngine On
+
+########################################
+# FORCE HTTPS
+########################################
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+########################################
+# NON-WWW → WWW
+########################################
+RewriteCond %{HTTP_HOST} !^www\. [NC]
+RewriteCond %{HTTPS}s ^on(s)|
+RewriteRule ^(.*)$ https://www.%{HTTP_HOST}/$1 [L,R=301]
+
+########################################
+# REDIRECT index.php → /
+########################################
+RewriteCond %{THE_REQUEST} \s/index\.php[\s?]
+RewriteRule ^index\.php$ https://www.bharatengg.in/ [R=301,L]
+
+########################################
+# GZIP COMPRESSION
+########################################
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/json
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/font-woff2
+    AddOutputFilterByType DEFLATE application/font-woff
+    AddOutputFilterByType DEFLATE font/ttf
+    AddOutputFilterByType DEFLATE font/otf
+    AddOutputFilterByType DEFLATE image/svg+xml
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE text/javascript
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE text/html
+
+    SetEnvIfNoCase Request_URI \.(?:gif|jpg|jpeg|png|webp|zip|gz|rar|mp4|avi|mov|wmv|mp3)$ no-gzip dont-vary
+
+    <IfModule mod_expires.c>
+        ExpiresActive On
+        ExpiresByType image/webp "access plus 1 year"
+        ExpiresByType text/css "access plus 1 month"
+        ExpiresByType text/javascript "access plus 1 month"
+        ExpiresByType application/javascript "access plus 1 month"
+        ExpiresByType image/svg+xml "access plus 1 year"
+        ExpiresByType text/html "access plus 1 week"
+    </IfModule>
+</IfModule>
+
+########################################
+# BROWSER CACHING (Extra)
+########################################
+<IfModule mod_headers.c>
+    <FilesMatch "\.(js|css|jpg|jpeg|png|gif|svg|webp|woff|woff2)$">
+        Header set Cache-Control "max-age=2592000, public"
+    </FilesMatch>
+</IfModule>
+
+########################################
+# YOUR OLD REDIRECTS (KEPT AS-IS)
+########################################
+Redirect /about.php /company.php
+Redirect /enquiry.php /contact.php
+Redirect /profile.php /company.php
+Redirect /achievements.php /certificates.php
+Redirect /product-details.php /product.php
+Redirect /ferro_alloys.php /ferro-alloys.php
+Redirect /raw_material.php /raw-materials.php
+Redirect /refactories&consumables.php /refactories.php
+Redirect /corporate-social-responsibility.php /company.php
+Redirect /product-details.php?c_id=31 /product.php
+Redirect /ferro-alloy/ferrosilicon-exporters-from-india.php /ferro-alloy/ferro-silicon-exporters-from-india.php
+Redirect /sg-casting/s-g-castings-manufacturers-in-india.php /sg-casting/sg-castings-manufacturers-in-india.php
+Redirect /bharat/.log/bharatengg.in/16.02.16/ankle-flexibility-exercises-swimming.html /product.php
+Redirect /bharat/.log/bharatengg.in/16.02.16/barbie-pictures-to-colour.html /product.php
+Redirect /bharat/.log/bharatengg.in/16.02.16/barbie-doll-images-photo.html /product.php
+Redirect /corporateSocialResponsibility.php /csr.php
